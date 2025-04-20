@@ -21,7 +21,7 @@
 
 // Konfigurasi API
 struct ApiConfig {
-  String baseUrl = "http://192.168.43.202:8000/api";
+  String baseUrl = "http://icampuscard.taibacreative.co.id/api";
   String terminalId = "1";
   String apiToken = "1234567890abcdef";
 };
@@ -873,6 +873,11 @@ String getCardInfo(const String &uid, bool &isBlocked, String &userType, bool &i
     }
   }
 
+  if (httpCode == 404) {
+    showMessage(F("Kartu"), F("Tidak Terdaftar"));
+    delay(1500);
+  }
+
   isBlocked = true;  // Default ke blokir jika tidak bisa mendapatkan informasi
   isUserActive = false;
   userType = "";
@@ -963,7 +968,7 @@ int sendRequest(const String &endpoint, const String &method, const String &data
   http.addHeader("Content-Type", "application/json");
   http.addHeader("Authorization", "Bearer " + apiConfig.apiToken);
   http.addHeader("X-Device-ID", WiFi.macAddress());
-  http.setTimeout(8000);  // 8 detik timeout
+  http.setTimeout(15000);
 
   int httpCode = -1;
 
